@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Streaming Ventures – Background Music That Fits Right In.</title>
+  <link rel="icon" type="image/png" href="Logo_Weiß.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #080808;
+      --off-white: #f0ede8;
+      --gold: #c9a96e;
+      --gold-light: #e8d5b0;
+      --gray: #777;
+      --border: rgba(201,169,110,0.18);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--black);
+      color: var(--off-white);
+      font-family: 'DM Mono', monospace;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.022;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.6rem 3.5rem;
+      background: linear-gradient(to bottom, rgba(8,8,8,0.97) 0%, transparent 100%);
+    }
+    .logo { display: flex; align-items: center; gap: 0.8rem; text-decoration: none; }
+    .logo img { width: 28px; height: 28px; object-fit: contain; }
+    .logo-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem; font-weight: 400; letter-spacing: 0.06em; color: var(--off-white);
+    }
+    .nav-mail {
+      font-size: 0.64rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--gold); text-decoration: none;
+      border: 1px solid var(--border); padding: 0.5rem 1.3rem;
+      transition: all 0.3s ease;
+    }
+    .nav-mail:hover { background: var(--gold); color: var(--black); border-color: var(--gold); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh; display: flex; flex-direction: column;
+      justify-content: center; align-items: center; text-align: center;
+      padding: 7rem 2rem 5rem; position: relative; overflow: hidden;
+    }
+    .hero-glow {
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 70% 55% at 50% 38%, rgba(201,169,110,0.07) 0%, transparent 65%),
+        radial-gradient(ellipse 30% 30% at 15% 85%, rgba(201,169,110,0.04) 0%, transparent 60%);
+    }
+    .hero-eyebrow {
+      font-size: 0.62rem; letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 2.2rem;
+      opacity: 0; animation: fadeUp 0.9s ease 0.15s forwards;
+    }
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.2rem, 8.5vw, 7.5rem);
+      font-weight: 300; line-height: 1.04; letter-spacing: -0.015em; max-width: 950px;
+      opacity: 0; animation: fadeUp 0.9s ease 0.35s forwards;
+    }
+    .hero h1 em { font-style: italic; color: var(--gold); }
+    .hero-sub {
+      margin-top: 2.2rem; font-size: 0.75rem; letter-spacing: 0.07em;
+      color: var(--gray); max-width: 440px; line-height: 2;
+      opacity: 0; animation: fadeUp 0.9s ease 0.55s forwards;
+    }
+    .hero-line {
+      margin-top: 3.5rem; width: 1px; height: 55px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      opacity: 0; animation: fadeUp 0.9s ease 0.75s forwards;
+    }
+
+    /* TICKER */
+    .ticker-wrap {
+      overflow: hidden; border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border); padding: 0.9rem 0;
+      background: rgba(201,169,110,0.02);
+    }
+    .ticker { display: flex; gap: 4rem; animation: ticker 35s linear infinite; width: max-content; }
+    .ticker-item {
+      font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--gray); white-space: nowrap; display: flex; align-items: center; gap: 1rem;
+    }
+    .ticker-item::before { content: '◆'; color: var(--gold); font-size: 0.35rem; }
+    @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+    /* STATS */
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); border-bottom: 1px solid var(--border); }
+    .stat {
+      padding: 4.5rem 2rem; text-align: center;
+      border-right: 1px solid var(--border); position: relative;
+    }
+    .stat:last-child { border-right: none; }
+    .stat::after {
+      content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+      width: 1px; height: 0; background: var(--gold); transition: height 0.5s ease;
+    }
+    .stat:hover::after { height: 36px; }
+    .stat-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.2rem, 6vw, 5.5rem); font-weight: 300; color: var(--gold); line-height: 1;
+    }
+    .stat-label { margin-top: 0.6rem; font-size: 0.58rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gray); }
+
+    /* SECTIONS */
+    .section { padding: 8rem 3.5rem; max-width: 1200px; margin: 0 auto; }
+    .section-border { border-top: 1px solid var(--border); }
+    .eyebrow { font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.6rem; }
+    .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.4rem, 4.5vw, 4rem); font-weight: 300; line-height: 1.1; }
+    .section-title em { font-style: italic; color: var(--gold); }
+    .section-body { margin-top: 1.6rem; font-size: 0.76rem; line-height: 2; color: var(--gray); max-width: 460px; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 7rem; align-items: center; }
+
+    /* COVER GRID */
+    .cover-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: rgba(201,169,110,0.1); overflow: hidden; }
+    .cover-grid img {
+      width: 100%; aspect-ratio: 1; object-fit: cover; display: block;
+      filter: saturate(0.75) brightness(0.88);
+      transition: filter 0.6s ease;
+    }
+    .cover-grid img:hover { filter: saturate(1.05) brightness(1); }
+
+    /* PLAYLIST */
+    .playlist-card {
+      background: rgba(201,169,110,0.04); border: 1px solid var(--border);
+      padding: 3.5rem; position: relative;
+    }
+    .playlist-card::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 38%; height: 1px; background: var(--gold);
+    }
+    .feat { display: flex; align-items: flex-start; gap: 1rem; margin-top: 1.8rem; }
+    .feat-dot { width: 5px; height: 5px; background: var(--gold); border-radius: 50%; margin-top: 0.45rem; flex-shrink: 0; }
+    .feat-text { font-size: 0.74rem; line-height: 1.85; color: var(--gray); }
+    .email-link {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      margin-top: 2.8rem; font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--gold); text-decoration: none;
+      border-bottom: 1px solid rgba(201,169,110,0.25); padding-bottom: 0.3rem;
+      transition: all 0.3s ease;
+    }
+    .email-link:hover { color: var(--gold-light); border-bottom-color: var(--gold-light); letter-spacing: 0.18em; }
+
+    /* PLAYLIST VISUAL */
+    .playlist-visual { position: relative; }
+    .playlist-visual img {
+      width: 100%; max-width: 380px; display: block; margin: 0 auto;
+      box-shadow: 0 0 0 1px var(--border), 0 40px 80px rgba(0,0,0,0.7), 0 0 100px rgba(201,169,110,0.05);
+      filter: saturate(0.82) brightness(0.92);
+      transition: filter 0.5s ease, box-shadow 0.5s ease;
+    }
+    .playlist-visual:hover img {
+      filter: saturate(1) brightness(1);
+      box-shadow: 0 0 0 1px var(--border), 0 40px 80px rgba(0,0,0,0.5), 0 0 140px rgba(201,169,110,0.1);
+    }
+
+    /* FOUNDERS */
+    .founders-img { position: relative; overflow: hidden; }
+    .founders-img::before {
+      content: ''; position: absolute; inset: 0;
+      border: 1px solid var(--border); z-index: 2; pointer-events: none;
+    }
+    .founders-img::after {
+      content: ''; position: absolute; bottom: -18px; right: -18px;
+      width: 100%; height: 100%;
+      border: 1px solid rgba(201,169,110,0.07); z-index: -1;
+    }
+    .founders-img img {
+      width: 100%; height: 480px; object-fit: cover; object-position: top center; display: block;
+      filter: grayscale(12%) contrast(1.05) brightness(0.93);
+      transition: filter 0.6s ease;
+    }
+    .founders-img:hover img { filter: grayscale(0%) contrast(1.05) brightness(1); }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 3.5rem;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-copy { font-size: 0.6rem; letter-spacing: 0.12em; color: var(--gray); }
+    .footer-links { display: flex; gap: 2.5rem; }
+    .footer-links a { font-size: 0.6rem; letter-spacing: 0.12em; color: var(--gray); text-decoration: none; transition: color 0.3s ease; }
+    .footer-links a:hover { color: var(--gold); }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+    .reveal { opacity: 0; transform: translateY(36px); transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1); }
+    .reveal.visible { opacity: 1; transform: none; }
+    .d1 { transition-delay: 0.12s; }
+    .d2 { transition-delay: 0.24s; }
+
+    /* RESPONSIVE */
+    @media (max-width: 820px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .section { padding: 5rem 1.5rem; }
+      .two-col { grid-template-columns: 1fr; gap: 3.5rem; }
+      .stats { grid-template-columns: 1fr; }
+      .stat { border-right: none; border-bottom: 1px solid var(--border); }
+      footer { padding: 2rem 1.5rem; flex-direction: column; align-items: flex-start; }
+      .founders-img img { height: 320px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="logo">
+    <img src="Logo_Weiß.png" alt="Streaming Ventures" />
+    <span class="logo-text">Streaming Ventures</span>
+  </a>
+  <a href="mailto:info@streaming-ventures.com" class="nav-mail">Contact</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-glow"></div>
+  <p class="hero-eyebrow">Unseen, but heard.</p>
+  <h1>Background Music That <em>Fits Right In.</em></h1>
+  <p class="hero-sub">Designed for focus, relaxation, and everyday moments — seamless, timeless, and always on.</p>
+  <div class="hero-line"></div>
+</div>
+
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span class="ticker-item">Background Music</span>
+    <span class="ticker-item">Focus &amp; Relaxation</span>
+    <span class="ticker-item">100M Streams</span>
+    <span class="ticker-item">176 Countries</span>
+    <span class="ticker-item">640 Releases</span>
+    <span class="ticker-item">Hybrid Music Movement</span>
+    <span class="ticker-item">Spotify Playlists</span>
+    <span class="ticker-item">Berlin Based</span>
+    <span class="ticker-item">Background Music</span>
+    <span class="ticker-item">Focus &amp; Relaxation</span>
+    <span class="ticker-item">100M Streams</span>
+    <span class="ticker-item">176 Countries</span>
+    <span class="ticker-item">640 Releases</span>
+    <span class="ticker-item">Hybrid Music Movement</span>
+    <span class="ticker-item">Spotify Playlists</span>
+    <span class="ticker-item">Berlin Based</span>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat reveal"><div class="stat-number">100M</div><div class="stat-label">Streams</div></div>
+  <div class="stat reveal d1"><div class="stat-number">640</div><div class="stat-label">Releases</div></div>
+  <div class="stat reveal d2"><div class="stat-number">176</div><div class="stat-label">Countries</div></div>
+</div>
+
+<div class="section section-border two-col">
+  <div class="reveal">
+    <p class="eyebrow">Our Mission</p>
+    <h2 class="section-title">Not Just a Label —<br>A <em>Hybrid Music Movement.</em></h2>
+    <p class="section-body">Effortless soundscapes for every moment. Designed for focus, relaxation, and everyday listening — seamless, timeless, and always on.</p>
+  </div>
+  <div class="cover-grid reveal d1">
+    <img src="Cover_1.jpg" alt="" />
+    <img src="Cover_2.jpg" alt="" />
+    <img src="Cover_3.jpg" alt="" />
+    <img src="Cover_5.jpg" alt="" />
+  </div>
+</div>
+
+<div class="section section-border two-col">
+  <div class="playlist-card reveal">
+    <p class="eyebrow">For Creators &amp; Curators</p>
+    <h2 class="section-title" style="font-size:clamp(1.7rem,2.8vw,2.6rem);">Earn Money by sharing your <em>Spotify Playlist.</em></h2>
+    <div class="feat"><div class="feat-dot"></div><p class="feat-text">No music production needed — just share, engage, and earn.</p></div>
+    <div class="feat"><div class="feat-dot"></div><p class="feat-text">Happy audience, money in your pocket.</p></div>
+    <div class="feat"><div class="feat-dot"></div><p class="feat-text">Turn your community into a revenue stream.</p></div>
+    <a href="mailto:info@streaming-ventures.com" class="email-link">→ info@streaming-ventures.com</a>
+  </div>
+  <div class="playlist-visual reveal d1">
+    <img src="Cover_9.jpg" alt="Streaming Ventures Release" />
+  </div>
+</div>
+
+<div class="section section-border two-col">
+  <div class="founders-img reveal">
+    <img src="Gru_nder.jpg" alt="Daniel &amp; Raphael – Founders of Streaming Ventures" />
+  </div>
+  <div class="reveal d1">
+    <p class="eyebrow">The Founders</p>
+    <h2 class="section-title">Two Producers with a <em>shared Vision.</em></h2>
+    <p class="section-body">Hey, we're Daniel &amp; Raphael! 👋<br><br>We are ramping up the streaming industry from the background — literally.<br><br>Based in Berlin, we're turning our passion for music into something bigger — creating engaging soundscapes for study, focus, and relaxation.</p>
+  </div>
+</div>
+
+<footer>
+  <span class="footer-copy">© 2026 Streaming Ventures</span>
+  <div class="footer-links">
+    <a href="privacy-policy.html">Privacy Policy</a>
+    <a href="imprint.html">Imprint</a>
+  </div>
+</footer>
+
+<script>
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
